@@ -1,0 +1,37 @@
+{
+  "name": "packy-server",
+  "version": "0.0.1",
+  "description": "The Packy backend",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "ts-node ./src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typescript": "tsc ./src/server.ts"
+  },
+  "author": "Stefano Bassoli, stfn.bssl@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "browserfs": "latest",
+    "cors": "latest",
+    "crypto": "latest",
+    "cuid": "^2.1.5",
+    "envalid": "^4.2.1",
+    "express": "^4.16.4",
+    "hashids": "latest",
+    "wizzi": "^0.6.7",
+    "wizzi-core": "^0.6.6",
+    "wizzi-js": "^0.6.6",
+    "wizzi-web": "^0.6.6"
+  },
+  "devDependencies": {
+    "@types/cors": "latest",
+    "@types/express": "^4.16.1",
+    "@types/jest": "^23.1.0",
+    "@types/node": "^11.9.4",
+    "jest": "^23.1.0",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.1"
+  }
+}
