@@ -9,6 +9,8 @@ function validateEnv() {
     return checkedEnv;
 }
 
+export const packyFilePrefix = 'json://';
+
 let config: ConfigType;
 
 export default function create(): ConfigType {

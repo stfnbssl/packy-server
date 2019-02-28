@@ -18,6 +18,18 @@
           "outFiles": [
             "${workspaceFolder}/bin/**/*.js"
           ]
+        },
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Quick Debug TypeScript in Node.js",
+          "preLaunchTask": "tsc: build - tsconfig.json",
+          "program": "${workspaceFolder}/src/quickDebug.ts",
+          "cwd": "${workspaceFolder}",
+          "protocol": "inspector",
+          "outFiles": [
+            "${workspaceFolder}/bin/**/*.js"
+          ]
         }
     ]
   }

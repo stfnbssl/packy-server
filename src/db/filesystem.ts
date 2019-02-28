@@ -58,7 +58,7 @@ const FsDbDriver: fsTypes.FsDb = {
     },
     getPackyTemplate: async function (id: string): Promise<FileDef[]> {
         return new Promise((resolve, rejects) => {
-            vfile.getFiles(packyTemplatesJsonUri, {deep: true, documentContent: true}, (err, result)=> {
+            vfile.getFiles(`${packyTemplatesJsonUri}/${id}`, {deep: true, documentContent: true}, (err, result)=> {
                 if (err) { rejects(err); }
                 resolve(result);
             })

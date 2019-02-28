@@ -6,7 +6,7 @@ const response_1 = require("../../../utils/response");
 var jsonParser = bodyParser.json();
 class TemplatesController {
     constructor() {
-        this.path = '/templates';
+        this.path = '/api/templates';
         this.router = express_1.Router();
         this.initialize = (initValues) => {
             this.fsDb = initValues.fsDb;

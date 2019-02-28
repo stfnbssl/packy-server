@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as cors from 'cors';
+import * as bodyParser from 'body-parser';
 import { AppInitializerType, ConfigType } from './types';
 
 class App {
@@ -12,6 +13,7 @@ class App {
         this.port = this.config.port;
         this.app = express();
         this.app.use(cors())
+        this.app.use(bodyParser.json())
         initValues.middlewares.forEach((middleware) => {
             middleware(this.app);
         });

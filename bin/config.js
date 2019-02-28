@@ -8,6 +8,7 @@ function validateEnv() {
     });
     return checkedEnv;
 }
+exports.packyFilePrefix = 'json://';
 let config;
 function create() {
     if (config == null) {

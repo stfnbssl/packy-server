@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node ./src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "typescript": "tsc ./src/server.ts"
+    "typescript": "tsc ./src/server.ts",
+    "quick-debug": "ts-node ./src/quickDebug.ts"
   },
   "author": "Stefano Bassoli, stfn.bssl@gmail.com",
   "license": "MIT",

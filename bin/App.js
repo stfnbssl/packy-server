@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
+const cors = require("cors");
 class App {
     constructor(initValues) {
         this.config = initValues.config;
         this.port = this.config.port;
         this.app = express();
+        this.app.use(cors());
         initValues.middlewares.forEach((middleware) => {
             middleware(this.app);
         });
