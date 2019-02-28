@@ -20,10 +20,10 @@
     "envalid": "^4.2.1",
     "express": "^4.16.4",
     "hashids": "latest",
-    "wizzi": "^0.6.7",
-    "wizzi-core": "^0.6.6",
-    "wizzi-js": "^0.6.6",
-    "wizzi-web": "^0.6.6"
+    "wizzi": "^0.6.8",
+    "wizzi-core": "^0.6.8",
+    "wizzi-js": "^0.6.8",
+    "wizzi-web": "^0.6.8"
   },
   "devDependencies": {
     "@types/cors": "latest",
