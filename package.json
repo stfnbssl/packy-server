@@ -21,9 +21,9 @@
     "express": "^4.16.4",
     "hashids": "latest",
     "wizzi": "^0.6.8",
-    "wizzi-core": "^0.6.6",
-    "wizzi-js": "^0.6.6",
-    "wizzi-web": "^0.6.6"
+    "wizzi-core": "^0.6.9",
+    "wizzi-js": "^0.6.9",
+    "wizzi-web": "^0.6.9"
   },
   "devDependencies": {
     "@types/cors": "latest",
