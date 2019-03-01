@@ -2,9 +2,10 @@ import * as path from 'path';
 import * as wizzi from 'wizzi';
 import { packyTypes } from '../packy';
 import { createFactory, ensurePackyFilePrefix } from './factory';
+import { GeneratedArtifact } from './types';
 import { FsJson } from 'wizzi-repo';
 
-export async function generateArtifact(filePath: string, files: packyTypes.PackyFiles): Promise<string> {
+export async function generateArtifact(filePath: string, files: packyTypes.PackyFiles): Promise<GeneratedArtifact> {
     return new Promise(async (resolve, reject)=> {
         const generator = generatorFor(filePath);
         if (generator) {
@@ -14,7 +15,9 @@ export async function generateArtifact(filePath: string, files: packyTypes.Packy
             jsonwf.wf.loadModelAndGenerateArtifact(ittfDocumentUri, {}, generator, (err, result) =>{
                 if (err) { return reject(err); }
                 console.log('Generated artifact', result);
-                resolve(result);
+                resolve({ 
+                    artifactContent: result, sourcePath: filePath, artifactGenerator: generator
+                })
             })
         } else {
             reject('No artifact generator available for document ' + filePath);

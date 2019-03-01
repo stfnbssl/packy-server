@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import * as bodyParser from  'body-parser'
 import { ControllerType, AppInitializerType } from '../../../types';
 import { fsTypes } from '../../filesystem'
-import { wizziProds } from '../../wizzi'
+import { wizziTypes, wizziProds } from '../../wizzi'
 import { PackyFiles, TemplateList, Template } from '../types';
 import { sendPromiseResult, sendSuccess } from '../../../utils/response';
 
@@ -22,9 +22,14 @@ export class ProductionsController implements ControllerType {
         const id = request.params.id;
         const files: PackyFiles = request.body;
         console.log('generateArtifact.received files', JSON.stringify(files, null, 2));
-        sendPromiseResult<string>(
-            response,
-            wizziProds.generateArtifact(id, files)
-        );
+        wizziProds.generateArtifact(id, files).then((value)=>{
+            console.log('ga', value);
+            sendSuccess(response, {
+                generatedArtifact: value
+            })
+        }).catch((err)=>{
+            console.log('err', err);
+        });
+        
     }
 }

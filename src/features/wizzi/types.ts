@@ -5,3 +5,9 @@ export type JsonWizziFactory = {
     wf: wizzi.WizziFactory;
     fsJson: FsJson;
 }
+
+export type GeneratedArtifact = {
+    artifactContent: string;
+    sourcePath: string;
+    artifactGenerator: string;
+}
