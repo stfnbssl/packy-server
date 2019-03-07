@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as wizzi from 'wizzi';
 import { packyTypes } from '../packy';
-import { createFactory, ensurePackyFilePrefix } from './factory';
+import { createFsJsonAndFactory, ensurePackyFilePrefix, createFilesystemFactory } from './factory';
 import { GeneratedArtifact } from './types';
 import { FsJson } from 'wizzi-repo';
 
@@ -11,8 +11,32 @@ export async function generateArtifact(filePath: string, files: packyTypes.Packy
         if (generator) {
             const ittfDocumentUri = ensurePackyFilePrefix(filePath);
             console.log('using artifact generator', generator);
-            const jsonwf = await createFactory(files);
+            const jsonwf = await createFsJsonAndFactory(files);
             jsonwf.wf.loadModelAndGenerateArtifact(ittfDocumentUri, {}, generator, (err, result) =>{
+                if (err) { return reject(err); }
+                console.log('Generated artifact', result);
+                resolve({ 
+                    artifactContent: result, sourcePath: filePath, artifactGenerator: generator
+                })
+            })
+        } else {
+            reject('No artifact generator available for document ' + filePath);
+        }
+    });
+}
+
+export async function generateArtifactFs(filePath: string, context?: any): Promise<GeneratedArtifact> {
+    return new Promise(async (resolve, reject)=> {
+        const generator = generatorFor(filePath);
+        if (generator) {
+            console.log('using artifact generator', generator);
+            const wf = await createFilesystemFactory();
+            const generationContext = { 
+                modelRequestContext: { 
+                    mTreeBuildUpContext: context || {}
+                } 
+            };
+            wf.loadModelAndGenerateArtifact(filePath, generationContext, generator, (err, result) =>{
                 if (err) { return reject(err); }
                 console.log('Generated artifact', result);
                 resolve({ 
@@ -28,7 +52,7 @@ export async function generateArtifact(filePath: string, files: packyTypes.Packy
 export async function executeJob(filePath: string, files: packyTypes.PackyFiles): Promise<FsJson> {
     return new Promise(async (resolve, reject)=> {
         const ittfDocumentUri = ensurePackyFilePrefix(filePath);
-        const jsonwf = await createFactory(files);
+        const jsonwf = await createFsJsonAndFactory(files);
         jsonwf.wf.executeJob({ 
             name: '', 
             path: ittfDocumentUri, 
@@ -39,6 +63,33 @@ export async function executeJob(filePath: string, files: packyTypes.PackyFiles)
                 resolve(jsonwf.fsJson);
             })
         });
+}
+
+export async function executeJobs(files: packyTypes.PackyFiles): Promise<FsJson> {
+    return new Promise(async (resolve, reject)=> {
+        const jobDocumentUris = Object.keys(files).filter(k=> k.endsWith('.wfjob.ittf'));
+        console.log('Executing jobs', jobDocumentUris);
+        const jsonwf = await createFsJsonAndFactory(files);
+        const execJob = (index: number): void => {
+            if (index == jobDocumentUris.length) {
+                console.log('Jobs executed.');
+                return resolve(jsonwf.fsJson);
+            }
+            const ittfDocumentUri = ensurePackyFilePrefix(jobDocumentUris[index]);
+            console.log('Executing job', ittfDocumentUri);
+            jsonwf.wf.executeJob({ 
+                name: '', 
+                path: ittfDocumentUri, 
+                productionOptions: {}
+            },
+            (err, result) => {
+                if (err) { return reject(err); }
+                console.log('Job executed. result', result);
+                execJob(index+1);
+            });
+        }
+        execJob(0);
+    });
 }
 
 const schemaModuleMap: {[k: string]: string} = {

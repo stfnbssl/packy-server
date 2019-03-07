@@ -4,7 +4,37 @@ const path = require("path");
 const wizzi = require("wizzi");
 const wizzi_repo_1 = require("wizzi-repo");
 const config_1 = require("../../config");
-async function createFactory(files) {
+function packyFilesToJsonDocuments(files) {
+    const jsonDocuments = [];
+    Object.keys(files).map(value => {
+        if (files[value].type === 'CODE') {
+            const filePath = ensurePackyFilePrefix(value);
+            jsonDocuments.push({ path: filePath, content: files[value].contents });
+        }
+    });
+    return jsonDocuments;
+}
+exports.packyFilesToJsonDocuments = packyFilesToJsonDocuments;
+async function createFilesystemFactory() {
+    return new Promise((resolve, reject) => {
+        wizzi.fsFactory({
+            plugins: {
+                items: [
+                    'wizzi-core',
+                    'wizzi-js',
+                    'wizzi-web',
+                ]
+            }
+        }, function (err, wf) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(wf);
+        });
+    });
+}
+exports.createFilesystemFactory = createFilesystemFactory;
+async function createFsJsonAndFactory(files) {
     const plugins = [];
     const jsonDocuments = [];
     Object.keys(files).map(value => {
@@ -39,7 +69,7 @@ async function createFactory(files) {
         });
     });
 }
-exports.createFactory = createFactory;
+exports.createFsJsonAndFactory = createFsJsonAndFactory;
 async function createFsJson(files) {
     const jsonDocuments = [];
     Object.keys(files).map(value => {
@@ -59,6 +89,27 @@ async function createFsJson(files) {
     });
 }
 exports.createFsJson = createFsJson;
+async function extractGeneratedFiles(fsJson) {
+    const files = {};
+    return new Promise((resolve, reject) => {
+        fsJson.toFiles({ removeRoot: config_1.packyFilePrefix }, (err, result) => {
+            if (err) {
+                reject(err);
+            }
+            result.forEach(value => {
+                if (value.relPath.endsWith('.ittf') == false) {
+                    files[value.relPath] = {
+                        type: 'CODE',
+                        contents: value.content,
+                        generated: true,
+                    };
+                }
+            });
+            resolve(files);
+        });
+    });
+}
+exports.extractGeneratedFiles = extractGeneratedFiles;
 const schemaPluginMap = {
     json: 'wizzi-core',
     text: 'wizzi-core',

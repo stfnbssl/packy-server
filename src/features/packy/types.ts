@@ -1,7 +1,8 @@
 type RequiredPackyFileAttributes = {
     contents: string;
     type: 'ASSET' | 'CODE';
-  };
+    generated?: true;
+};
   
 export type PackyFiles = {
     [x: string]: RequiredPackyFileAttributes;

@@ -4,6 +4,12 @@ import { fsTypes } from './features/filesystem';
 export type ConfigType = {
     port: number;
     packyTemplatesFolder: string;
+    Auth0Domain: string;
+    Auth0ClientId: string;
+    Auth0ClientSecret: string;
+    Auth0CallbackUrl: string;
+    Auth0ManagementApiToken: string;
+    Auth0ManagementEndpoint: string;
 }
 
 export type ControllerType = {

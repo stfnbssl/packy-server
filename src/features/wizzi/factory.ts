@@ -3,9 +3,37 @@ import * as wizzi from 'wizzi';
 import { JsonComponents, JsonDocumentDto, FsJson } from 'wizzi-repo';
 import { packyFilePrefix } from '../../config';
 import { packyTypes } from '../packy';
-import { JsonWizziFactory } from './types';
+import { JsonWizziFactory, FilesystemWizziFactory } from './types';
 
-export async function createFactory(files: packyTypes.PackyFiles): Promise<JsonWizziFactory> {
+export function packyFilesToJsonDocuments(files: packyTypes.PackyFiles): JsonDocumentDto[] {
+    const jsonDocuments: JsonDocumentDto[] = [];
+    Object.keys(files).map(value=> {
+        if (files[value].type === 'CODE') {
+            const filePath = ensurePackyFilePrefix(value);
+            jsonDocuments.push({ path: filePath, content: files[value].contents});
+        }
+    });
+    return jsonDocuments;
+}
+
+export async function createFilesystemFactory(): Promise<wizzi.WizziFactory> {
+    return new Promise((resolve, reject)=>{
+        wizzi.fsFactory({
+            plugins: {
+                items: [
+                    'wizzi-core',
+                    'wizzi-js',
+                    'wizzi-web',
+                ]
+            }
+        }, function(err, wf) {
+            if (err) { return reject(err); }
+            resolve(wf);
+        });
+    });
+}
+
+export async function createFsJsonAndFactory(files: packyTypes.PackyFiles): Promise<JsonWizziFactory> {
     const plugins: string[] = [];
     const jsonDocuments: JsonDocumentDto[] = [];
     Object.keys(files).map(value=> {
@@ -52,6 +80,25 @@ export async function createFsJson(files: packyTypes.PackyFiles): Promise<FsJson
             resolve(result);
         });
     });
+}
+
+export async function extractGeneratedFiles(fsJson: FsJson): Promise<packyTypes.PackyFiles> {
+    const files: packyTypes.PackyFiles = {};
+    return new Promise((resolve, reject)=>{
+        fsJson.toFiles({ removeRoot: packyFilePrefix }, (err, result)=>{
+            if (err) { reject(err); }
+            result.forEach(value=>{
+                if (value.relPath.endsWith('.ittf') == false) {
+                    files[value.relPath] = {
+                        type: 'CODE',
+                        contents: value.content as string,
+                        generated: true,
+                    };
+                }
+            })
+            resolve(files);
+        });
+    })
 }
 
 const schemaPluginMap: {[k: string]: string} = {

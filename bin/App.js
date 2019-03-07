@@ -2,12 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 class App {
     constructor(initValues) {
         this.config = initValues.config;
         this.port = this.config.port;
         this.app = express();
         this.app.use(cors());
+        this.app.use(bodyParser.json());
         initValues.middlewares.forEach((middleware) => {
             middleware(this.app);
         });
