@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import * as bodyParser from  'body-parser'
-import { ControllerType, AppInitializerType } from '../../../types';
+import { ControllerType, AppInitializerType } from '../../app/types';
 import { fsTypes } from '../../filesystem'
 import { PackyFiles, TemplateList, Template } from '../types';
 import { sendPromiseResult, sendSuccess } from '../../../utils/response';
@@ -8,7 +8,7 @@ import { sendPromiseResult, sendSuccess } from '../../../utils/response';
 var jsonParser = bodyParser.json()
 
 export class TemplatesController implements ControllerType {
-    public path = '/api/templates';
+    public path = '/api/v1/templates';
     public router = Router();
     public fsDb: fsTypes.FsDb | undefined;
 

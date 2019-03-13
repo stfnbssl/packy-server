@@ -1,9 +1,3 @@
-export type GithubRepo = {
-    name: string;
-    username: string;
-    password: string;
-}
-
 export type FileDiffKind = '+' | '-' | '<>';
 
 export type FileDiffItem = {

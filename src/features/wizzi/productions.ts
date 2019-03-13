@@ -5,6 +5,7 @@ import { createFsJsonAndFactory, ensurePackyFilePrefix, createFilesystemFactory 
 import { GeneratedArtifact } from './types';
 import { FsJson } from 'wizzi-repo';
 
+
 export async function generateArtifact(filePath: string, files: packyTypes.PackyFiles): Promise<GeneratedArtifact> {
     return new Promise(async (resolve, reject)=> {
         const generator = generatorFor(filePath);
@@ -22,6 +23,21 @@ export async function generateArtifact(filePath: string, files: packyTypes.Packy
         } else {
             reject('No artifact generator available for document ' + filePath);
         }
+    });
+}
+
+export async function loadModelFs(filePath: string, context: any): Promise<wizzi.WizziModel> {
+    return new Promise(async (resolve, reject)=> {
+        const schemaName = schemaFromFilePath(filePath);
+        if (!schemaName) {
+            return reject('File is not a known ittf document: ' + filePath);
+        }
+        const wf = await createFilesystemFactory();
+        wf.loadModel(schemaName, filePath, {mTreeBuildUpContext: context}, (err, result) =>{
+            if (err) { return reject(err); }
+            // console.log('Generated artifact', result);
+            resolve(result);
+        })
     });
 }
 
@@ -111,6 +127,14 @@ function generatorFor(file: string): string | undefined {
     const nameParts = path.basename(file).split('.');
     if (nameParts[nameParts.length-1] === 'ittf') {
         return schemaModuleMap[nameParts[nameParts.length-2]];
+    }
+    return undefined;
+}
+
+function schemaFromFilePath(filePath: string): string | undefined {
+    const nameParts = path.basename(filePath).split('.');
+    if (nameParts[nameParts.length-1] === 'ittf') {
+        return nameParts[nameParts.length-2];
     }
     return undefined;
 }

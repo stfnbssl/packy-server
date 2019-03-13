@@ -31,7 +31,12 @@ async function generateArtifactFs(filePath, context) {
         if (generator) {
             console.log('using artifact generator', generator);
             const wf = await factory_1.createFilesystemFactory();
-            wf.loadModelAndGenerateArtifact(filePath, {}, generator, (err, result) => {
+            const generationContext = {
+                modelRequestContext: {
+                    mTreeBuildUpContext: context || {}
+                }
+            };
+            wf.loadModelAndGenerateArtifact(filePath, generationContext, generator, (err, result) => {
                 if (err) {
                     return reject(err);
                 }

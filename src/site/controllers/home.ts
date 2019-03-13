@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { ControllerType, AppInitializerType } from '../../types';
+import { ControllerType, AppInitializerType } from '../../features/app/types';
 
 export class HomeController implements ControllerType {
     public path = '';

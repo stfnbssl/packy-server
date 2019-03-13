@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path = require("path");
 const wizzi = require("wizzi");
 const wizzi_repo_1 = require("wizzi-repo");
-const config_1 = require("../../config");
+const env_1 = require("../config/env");
 function packyFilesToJsonDocuments(files) {
     const jsonDocuments = [];
     Object.keys(files).map(value => {
@@ -92,7 +92,7 @@ exports.createFsJson = createFsJson;
 async function extractGeneratedFiles(fsJson) {
     const files = {};
     return new Promise((resolve, reject) => {
-        fsJson.toFiles({ removeRoot: config_1.packyFilePrefix }, (err, result) => {
+        fsJson.toFiles({ removeRoot: env_1.packyFilePrefix }, (err, result) => {
             if (err) {
                 reject(err);
             }
@@ -134,7 +134,7 @@ function pluginFor(file) {
     return undefined;
 }
 function ensurePackyFilePrefix(filePath) {
-    return filePath.startsWith(config_1.packyFilePrefix) ? filePath : config_1.packyFilePrefix + filePath;
+    return filePath.startsWith(env_1.packyFilePrefix) ? filePath : env_1.packyFilePrefix + filePath;
 }
 exports.ensurePackyFilePrefix = ensurePackyFilePrefix;
 //# sourceMappingURL=factory.js.map

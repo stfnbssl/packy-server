@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { Application } from 'express';
-import { MiddlewareType } from '../types';
+import { MiddlewareType } from '../features/app/types';
 import { wizziProds } from '../features/wizzi';
 
 export const WizziViewEngineMiddleware: MiddlewareType = (app: Application) => {
@@ -11,8 +11,10 @@ export const WizziViewEngineMiddleware: MiddlewareType = (app: Application) => {
             callback(null, generated.artifactContent);
         }).catch(err=>{
             callback(err);
-        })
-    })
-    app.set('views', path.resolve(__dirname,  '..', 'site', 'views')) // specify the views directory
-    app.set('view engine', 'ittf') // register the template engine
+        });
+    });
+    const viewsFolder = path.resolve(__dirname,  '..', 'site', 'views');
+    console.log('WizziViewEngineMiddleware.views folder', viewsFolder);
+    app.set('views', viewsFolder); // specify the views directory
+    app.set('view engine', 'ittf'); // register the template engine
 }

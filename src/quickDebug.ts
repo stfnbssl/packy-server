@@ -1,8 +1,34 @@
-import { createFactory } from './features/wizzi/factory';
+import { createFsJsonAndFactory } from './features/wizzi/factory';
 import { generateArtifact, executeJob } from './features/wizzi/productions';
+import { packyTypes } from './features/packy';
+import { githubApiCalls } from './features/github';
+
+const github_access_token = '410a1368f1ba83cae84efac295b7ac0b4afe4b92';
+
+async function testCloneGithubRepo() {
+    const result = await githubApiCalls.cloneBranch(
+        { name: 'packy-demo-strawberry', owner: 'stfnbssl', token: github_access_token },
+        'master'
+    );
+    console.log('testCloneGithubRepo.files', result.files);
+    console.log('testCloneGithubRepo.commitHistory', result.commitHistory);
+}
+
+async function testUpdateGithubRepo(files: packyTypes.PackyFiles) {
+    const result = await githubApiCalls.updateBranch(
+        files,
+        { name: 'packy-demo-strawberry', owner: 'stfnbssl', token: github_access_token },
+        'master'
+    );
+}
+
+async function testTemplateRepositories() {
+    const result = await githubApiCalls.getPackyTemplateRepositories();
+    console.log('testTemplateRepositories', result);
+}
 
 async function testFactory() {
-    const wf = await createFactory({
+    const wf = await createFsJsonAndFactory({
         'x/d/a.js.ittf': { type: 'CODE', contents: 'Hey' },
         'x/d/b.html.ittf': { type: 'CODE', contents: 'Hey' },
     })
@@ -53,4 +79,14 @@ async function testWizziJob() {
     }));
 }
 
-testWizziJob();
+// testWizziJob();
+// testCloneGithubRepo();
+/*
+testUpdateGithubRepo({
+    'index.ts': {
+        type: 'CODE',
+        contents: 'console.log("Hello world")'
+    }
+})
+*/
+testTemplateRepositories();

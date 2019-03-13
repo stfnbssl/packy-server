@@ -1,22 +1,29 @@
-import { ConfigType, ControllerType, AppInitializerType, MiddlewareType } from './types';
-import configInit from './config';
+import { ControllerType, AppInitializerType, MiddlewareType } from './features/app/types';
+import { ModelBuilderType } from './features/app';
+import { config } from './features/config';
 import filesystemStart from './db/filesystem';
+import mongodbStart from './db/mongodb';
 import { siteControllers } from './site';
 import { accountControllers } from './features/account';
-import { packyControllers } from './features/packy';
-import { fsTypes } from './features/filesystem';
-import appMiddlewares from './middleware';
+import { auth0Controllers } from './features/auth0';
+import { packyModelBuilders, packyControllers } from './features/packy';
+import { appMiddlewares, auth0Secured } from './middleware';
 import App from './App';
 
 async function start() {
   
-  const config: ConfigType = configInit();
-
   const fsDb = await filesystemStart(config);
+
+  let modelBuilders: ModelBuilderType[] = [
+    ...packyModelBuilders
+  ];
+  
+  mongodbStart(config, modelBuilders);
   
   let controllers: ControllerType[] = [
     ...siteControllers,
     ...accountControllers,
+    ...auth0Controllers,
     ...packyControllers, 
   ];
   
@@ -26,7 +33,8 @@ async function start() {
     config,
     controllers,
     middlewares,
-    fsDb
+    fsDb,
+    auth0Secured
   }
   
   const app = new App(appInitializer);
@@ -35,8 +43,6 @@ async function start() {
 
 try {
   start();
-} catch(ex){
+} catch(ex) {
   console.log(ex);
 }
-
-

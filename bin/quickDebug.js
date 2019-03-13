@@ -2,8 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const factory_1 = require("./features/wizzi/factory");
 const productions_1 = require("./features/wizzi/productions");
+const github_1 = require("./features/github");
+async function testCloneGithubRepo() {
+    const result = await github_1.githubApiCalls.cloneBranch({ name: 'packy-demo-strawberry', owner: 'stfnbssl', token: '' }, 'master');
+    console.log('testCloneGithubRepo', result);
+}
+async function testUpdateGithubRepo(files) {
+}
 async function testFactory() {
-    const wf = await factory_1.createFactory({
+    const wf = await factory_1.createFsJsonAndFactory({
         'x/d/a.js.ittf': { type: 'CODE', contents: 'Hey' },
         'x/d/b.html.ittf': { type: 'CODE', contents: 'Hey' },
     });
@@ -46,5 +53,6 @@ async function testWizziJob() {
         console.log(JSON.stringify(result, null, 2));
     }));
 }
-testWizziJob();
+// testWizziJob();
+testCloneGithubRepo();
 //# sourceMappingURL=quickDebug.js.map

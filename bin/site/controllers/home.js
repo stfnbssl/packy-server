@@ -9,7 +9,7 @@ class HomeController {
             this.router.get(`/`, this.home);
         };
         this.home = async (request, response) => {
-            response.render('index.html', {});
+            response.render('index.html.ittf', { title: 'Site Home' });
         };
     }
 }

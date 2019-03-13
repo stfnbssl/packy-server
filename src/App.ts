@@ -1,7 +1,8 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
-import { AppInitializerType, ConfigType } from './types';
+import { ConfigType } from './features/config';
+import { AppInitializerType } from './features/app/types';
 
 class App {
     public app: express.Application;

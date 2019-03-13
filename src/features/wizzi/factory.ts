@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as wizzi from 'wizzi';
 import { JsonComponents, JsonDocumentDto, FsJson } from 'wizzi-repo';
-import { packyFilePrefix } from '../../config';
+import { packyFilePrefix } from '../config/env';
 import { packyTypes } from '../packy';
 import { JsonWizziFactory, FilesystemWizziFactory } from './types';
 

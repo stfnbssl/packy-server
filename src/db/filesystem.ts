@@ -1,7 +1,7 @@
 import { JsonComponents, jsonfile, FsJsonDocumentManager } from 'wizzi-repo';
 import * as path from 'path';
 import * as wizzi from 'wizzi';
-import { ConfigType } from '../types';
+import { ConfigType } from '../features/config';
 import { fsTypes } from '../features/filesystem';
 import { rejects } from 'assert';
 import { FileDef, VFile } from 'wizzi-utils';

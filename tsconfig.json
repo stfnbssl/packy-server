@@ -8,6 +8,7 @@
 			"es6", "dom"
 		],
 		"module": "commonjs",
+		"moduleResolution": "node",
 		// "noEmit": true,
 		"noImplicitAny": true,
 		"noImplicitThis": false,
@@ -17,9 +18,11 @@
 		"strictFunctionTypes": false,
 		"strictNullChecks": true,
 		"target": "es2017",
+		"typeRoots": [ "node_modules/@types", "src/typings" ],
 		"types": [
 			"node"
 		], 
+		
 	},
 	"include": [
 		"src/**/*.ts"

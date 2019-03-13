@@ -1,0 +1,16 @@
+{
+    "globals": {
+        "window": {},
+        "ts-jest": {
+          "tsConfig": "./tsconfig.json"
+        }
+    },
+    "globalSetup": "./src/tests/global-setup.ts",
+    "globalTeardown": "./src/tests/global-teardown.ts",
+    "testRegex": "(/spec/.*|\\.(test|spec))\\.(ts|tsx)$",
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "moduleFileExtensions": ["ts", "tsx"],
+    "verbose": true
+}

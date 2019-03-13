@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import * as bodyParser from  'body-parser'
-import { ControllerType, AppInitializerType } from '../../../types';
+import { ControllerType, AppInitializerType } from '../../app/types';
 import { fsTypes } from '../../filesystem'
 import { wizziTypes, wizziProds, wizziFactory } from '../../wizzi'
 import { PackyFiles, TemplateList, Template } from '../types';
@@ -10,7 +10,7 @@ import { file } from 'wizzi';
 var jsonParser = bodyParser.json()
 
 export class ProductionsController implements ControllerType {
-    public path = '/api/productions';
+    public path = '/api/v1/productions';
     public router = Router();
     public fsDb: fsTypes.FsDb | undefined;
 
